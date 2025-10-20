@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getBrowserClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -13,17 +13,41 @@ export default function LoginPage() {
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 
+	// Check if user is already logged in
+	useEffect(() => {
+		const checkUser = async () => {
+			const { data: { user } } = await supabase.auth.getUser();
+			if (user) {
+				router.push("/admin");
+			}
+		};
+		checkUser();
+	}, [router, supabase.auth]);
+
 	async function onSubmit(e: React.FormEvent) {
 		e.preventDefault();
 		setError(null);
 		setLoading(true);
-		const { error } = await supabase.auth.signInWithPassword({ email, password });
-		setLoading(false);
-		if (error) {
-			setError(error.message);
-			return;
+		
+		try {
+			const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+			
+			if (error) {
+				setError(error.message);
+				setLoading(false);
+				return;
+			}
+
+			if (data.user) {
+				// Wait a moment for auth state to propagate
+				setTimeout(() => {
+					router.push("/admin");
+				}, 100);
+			}
+		} catch {
+			setError("An unexpected error occurred");
+			setLoading(false);
 		}
-		router.push("/admin");
 	}
 
 	return (

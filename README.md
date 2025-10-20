@@ -55,4 +55,13 @@ If images are broken:
 3. In Supabase, ensure Storage bucket `product-images` exists and is public.
 4. Re-run `supabase/schema.sql` if needed to set RLS policies.
 
+## Troubleshooting Auth Issues
+If login/logout doesn't work on Vercel:
+1. **Check Environment Variables**: Ensure `NEXT_PUBLIC_SITE_URL` is set to your Vercel URL
+2. **Check Supabase Settings**: In Supabase Dashboard > Authentication > URL Configuration:
+   - Add your Vercel URL to "Site URL"
+   - Add your Vercel URL + `/auth/callback` to "Redirect URLs"
+3. **Check Console**: Look for auth errors in browser console
+4. **Test Locally**: Ensure auth works locally first
+
 Zero-downtime deploys are handled by Vercel. Supabase free tier covers database, auth and storage.
