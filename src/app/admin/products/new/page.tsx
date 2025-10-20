@@ -12,6 +12,10 @@ export default function NewProductPage() {
 	const [price, setPrice] = useState<number>(0);
 	const [description, setDescription] = useState("");
 	const [status, setStatus] = useState("published");
+	const [categories, setCategories] = useState<string[]>([]);
+	const [tags, setTags] = useState<string[]>([]);
+	const [newCategory, setNewCategory] = useState("");
+	const [newTag, setNewTag] = useState("");
 	const [images, setImages] = useState<FileList | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
@@ -23,7 +27,7 @@ export default function NewProductPage() {
 		const slug = slugify(name);
 		const { data: created, error: insertErr } = await supabase
 			.from("products")
-			.insert({ name, slug, description, price_rupees: price, status })
+			.insert({ name, slug, description, price_rupees: price, status, categories, tags })
 			.select("id")
 			.single();
 		if (insertErr || !created) {
@@ -53,6 +57,28 @@ export default function NewProductPage() {
 		setLoading(false);
 		router.push("/admin/products");
 	}
+
+	const addCategory = () => {
+		if (newCategory.trim() && !categories.includes(newCategory.trim())) {
+			setCategories([...categories, newCategory.trim()]);
+			setNewCategory("");
+		}
+	};
+
+	const removeCategory = (category: string) => {
+		setCategories(categories.filter(c => c !== category));
+	};
+
+	const addTag = () => {
+		if (newTag.trim() && !tags.includes(newTag.trim())) {
+			setTags([...tags, newTag.trim()]);
+			setNewTag("");
+		}
+	};
+
+	const removeTag = (tag: string) => {
+		setTags(tags.filter(t => t !== tag));
+	};
 
 	return (
 		<div className="max-w-2xl">
@@ -98,6 +124,68 @@ export default function NewProductPage() {
 							<option value="published">Published</option>
 							<option value="archived">Archived</option>
 						</select>
+					</div>
+
+					{/* Categories */}
+					<div>
+						<label className="block text-sm font-medium text-slate-700 mb-2">Categories</label>
+						<div className="space-y-3">
+							<div className="flex gap-2">
+								<input 
+									className="flex-1 px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+									value={newCategory} 
+									onChange={(e) => setNewCategory(e.target.value)} 
+									placeholder="Add category"
+									onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCategory())}
+								/>
+								<button type="button" onClick={addCategory} className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+									Add
+								</button>
+							</div>
+							{categories.length > 0 && (
+								<div className="flex flex-wrap gap-2">
+									{categories.map(category => (
+										<span key={category} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full flex items-center gap-2">
+											{category}
+											<button type="button" onClick={() => removeCategory(category)} className="text-blue-500 hover:text-blue-700">
+												×
+											</button>
+										</span>
+									))}
+								</div>
+							)}
+						</div>
+					</div>
+
+					{/* Tags */}
+					<div>
+						<label className="block text-sm font-medium text-slate-700 mb-2">Tags</label>
+						<div className="space-y-3">
+							<div className="flex gap-2">
+								<input 
+									className="flex-1 px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+									value={newTag} 
+									onChange={(e) => setNewTag(e.target.value)} 
+									placeholder="Add tag"
+									onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+								/>
+								<button type="button" onClick={addTag} className="px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+									Add
+								</button>
+							</div>
+							{tags.length > 0 && (
+								<div className="flex flex-wrap gap-2">
+									{tags.map(tag => (
+										<span key={tag} className="px-3 py-1 bg-green-100 text-green-700 rounded-full flex items-center gap-2">
+											{tag}
+											<button type="button" onClick={() => removeTag(tag)} className="text-green-500 hover:text-green-700">
+												×
+											</button>
+										</span>
+									))}
+								</div>
+							)}
+						</div>
 					</div>
 					
 					<div>

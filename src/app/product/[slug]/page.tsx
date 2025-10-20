@@ -1,6 +1,8 @@
 import { getServerClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import ImageCarousel from "@/components/ImageCarousel";
+import AdminActions from "@/components/AdminActions";
+import { isAdmin } from "@/lib/auth";
 
 export default async function ProductDetail({ params }: { params: { slug: string } }) {
 	const supabase = await getServerClient();
@@ -9,6 +11,10 @@ export default async function ProductDetail({ params }: { params: { slug: string
 		.select("*, product_images(*)")
 		.eq("slug", params.slug)
 		.single();
+	
+	// Check if user is admin
+	const userIsAdmin = await isAdmin();
+	
 	if (error || !product) {
 		return (
 			<div className="container mx-auto px-4 py-8">
@@ -38,9 +44,51 @@ export default async function ProductDetail({ params }: { params: { slug: string
 				</div>
 				<div className="space-y-6">
 					<div>
-						<h1 className="text-3xl font-bold text-slate-900 mb-2">{product.name}</h1>
-						<div className="text-2xl font-bold text-blue-600">₹{product.price_rupees.toLocaleString()}</div>
+						<div className="flex items-start justify-between">
+							<div>
+								<h1 className="text-3xl font-bold text-slate-900 mb-2">{product.name}</h1>
+								<div className="text-2xl font-bold text-blue-600">₹{product.price_rupees.toLocaleString()}</div>
+							</div>
+							{userIsAdmin && (
+								<AdminActions 
+									productId={product.id} 
+									productName={product.name}
+									className="ml-4"
+								/>
+							)}
+						</div>
 					</div>
+					
+					{/* Categories and Tags */}
+					{(product.categories?.length > 0 || product.tags?.length > 0) && (
+						<div className="space-y-3">
+							{product.categories?.length > 0 && (
+								<div>
+									<h3 className="text-sm font-medium text-slate-700 mb-2">Categories</h3>
+									<div className="flex flex-wrap gap-2">
+										{product.categories.map((category: string) => (
+											<span key={category} className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-full">
+												{category}
+											</span>
+										))}
+									</div>
+								</div>
+							)}
+							{product.tags?.length > 0 && (
+								<div>
+									<h3 className="text-sm font-medium text-slate-700 mb-2">Tags</h3>
+									<div className="flex flex-wrap gap-2">
+										{product.tags.map((tag: string) => (
+											<span key={tag} className="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-full">
+												{tag}
+											</span>
+										))}
+									</div>
+								</div>
+							)}
+						</div>
+					)}
+					
 					{product.description && (
 						<div>
 							<h3 className="text-lg font-semibold text-slate-900 mb-2">Description</h3>
