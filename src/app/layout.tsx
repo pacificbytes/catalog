@@ -5,6 +5,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -29,7 +30,6 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<SpeedInsights />
 				<LoadingIndicator />
 				<header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
 					<div className="container flex h-16 items-center justify-between px-4">
@@ -53,6 +53,8 @@ export default function RootLayout({
 					{children}
 				</main>
 				<Footer />
+				<SpeedInsights />
+				<Analytics />
 			</body>
 		</html>
 	);
