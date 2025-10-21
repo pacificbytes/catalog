@@ -63,7 +63,9 @@ The system will automatically sync the user data and apply the correct role perm
 ### 📱 WhatsApp Contact Integration
 - **Product Pages**: Each product now has a WhatsApp contact button
 - **Editable Number**: WhatsApp number can be configured in admin panel
-- **Auto-Message**: Pre-filled message with product name for easy inquiry
+- **Customizable Message**: WhatsApp message template can be customized with product name and link placeholders
+- **Product Links**: Messages automatically include direct links to the product page
+- **Auto-Message**: Pre-filled message with product name and link for easy inquiry
 
 ### 🦶 Professional Footer
 - **Company Information**: Displays company name, address, phone, email
@@ -101,6 +103,48 @@ https://maps.google.com/maps/dir/?api=1&destination=123+Business+Street,+City,+S
 - **Contact Page** (`/contact`): Dedicated contact page with company information, contact form, and business hours
 - **Categories Page** (`/categories`): Browse products by categories and tags with product counts
 - **Clean Main Page**: Removed admin login button for cleaner public interface
+
+### 💬 WhatsApp Message Customization
+
+**How to Customize WhatsApp Messages:**
+
+1. **Go to** `/admin/settings` (as admin)
+2. **Find** "Contact & Communication" section
+3. **Edit** "WhatsApp Message Template" field
+4. **Use Placeholders**: 
+   - Include `{product_name}` where you want the product name to appear
+   - Include `{product_link}` where you want the product URL to appear
+5. **Save** configuration
+
+**Example Templates:**
+
+**Basic Inquiry with Link:**
+```
+Hi! I'm interested in the "{product_name}" product. Could you please provide more information?
+
+Product Link: {product_link}
+```
+
+**Detailed Inquiry:**
+```
+Hello! I would like to know more about your "{product_name}" service. Please share pricing and availability details.
+
+View product: {product_link}
+```
+
+**Urgent Request:**
+```
+Hi! I need a quote for "{product_name}" urgently. Please contact me as soon as possible.
+
+Product details: {product_link}
+```
+
+**Custom Business Message:**
+```
+Good day! I'm interested in your "{product_name}" offering. Could you please send me more details and pricing information?
+
+Product page: {product_link}
+```
 
 ### ⚙️ Unified Settings Page
 - **Admin-Only Access**: Properly restricted to admin users

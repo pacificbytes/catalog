@@ -9,11 +9,11 @@ export default async function CategoriesPage() {
 	// Fetch all products to extract categories and tags
 	const { data: products } = await supabase
 		.from('products')
-		.select('category, tags')
-		.eq('status', 'active');
+		.select('categories, tags')
+		.eq('status', 'published');
 
 	// Extract unique categories
-	const categories = Array.from(new Set(products?.map(p => p.category).filter(Boolean) || []));
+	const categories = Array.from(new Set(products?.flatMap(p => p.categories || []) || [])).filter(Boolean);
 	
 	// Extract all tags
 	const allTags = products?.flatMap(p => p.tags || []).filter(Boolean) || [];
@@ -22,9 +22,11 @@ export default async function CategoriesPage() {
 	// Count products per category
 	const categoryCounts: Record<string, number> = {};
 	products?.forEach(product => {
-		if (product.category) {
-			categoryCounts[product.category] = (categoryCounts[product.category] || 0) + 1;
-		}
+		product.categories?.forEach((category: string) => {
+			if (category) {
+				categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+			}
+		});
 	});
 
 	// Count products per tag

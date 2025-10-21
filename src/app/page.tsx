@@ -5,6 +5,7 @@ import CatalogImageCarousel from "@/components/CatalogImageCarousel";
 import AdminActions from "@/components/AdminActions";
 import ColorfulCard from "@/components/ColorfulCard";
 import ColorfulBadge from "@/components/ColorfulBadge";
+import SearchFilters from "@/components/SearchFilters";
 import { isAdmin } from "@/lib/auth";
 
 function buildQuery(
@@ -63,93 +64,28 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 	const total = count ?? 0;
 	const totalPages = Math.max(1, Math.ceil(total / pageSize));
 	return (
-		<div className="container mx-auto px-4 py-8">
-			<div className="mb-8">
+		<div className="container mx-auto px-4 py-6">
+			<div className="mb-6">
 				<div className="text-center">
-					<h1 className="text-3xl font-bold text-slate-900 mb-2">Product Catalog</h1>
-					<p className="text-slate-600">Discover our professional printing services</p>
+					<h1 className="text-2xl font-bold text-slate-900 mb-1">Product Catalog</h1>
+					<p className="text-sm text-slate-600">Discover our professional printing services</p>
 				</div>
 			</div>
 
-			{/* Products Section */}
-			<div id="products" className="mb-8">
-				<ColorfulCard colorScheme="gradient" className="p-6">
-					<form className="space-y-4">
-						<div className="flex flex-col sm:flex-row gap-4">
-							<div className="flex-1">
-								<input 
-									name="q" 
-									placeholder="🔍 Search products..." 
-									defaultValue={(resolvedSearchParams.q as string) ?? ""} 
-									className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition-all duration-300 bg-white/80 backdrop-blur-sm hover:border-blue-300 hover:shadow-md" 
-								/>
-							</div>
-							<div className="sm:w-48">
-								<select 
-									name="sort" 
-									defaultValue={(resolvedSearchParams.sort as string) ?? "new"} 
-									className="w-full px-4 py-3 border-2 border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-300 bg-white/80 backdrop-blur-sm hover:border-purple-300 hover:shadow-md"
-								>
-									<option value="new">🆕 Newest First</option>
-									<option value="price_asc">💰 Price: Low to High</option>
-									<option value="price_desc">💎 Price: High to Low</option>
-								</select>
-							</div>
-							<button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-medium shadow-lg cursor-pointer">
-								🚀 Search
-							</button>
-						</div>
-						
-						{/* Category and Tag Filters */}
-						{(allCategories.length > 0 || allTags.length > 0) && (
-							<div className="flex flex-col sm:flex-row gap-4">
-								{allCategories.length > 0 && (
-									<div className="sm:w-48">
-										<select 
-											name="category" 
-											defaultValue={(resolvedSearchParams.category as string) ?? ""} 
-											className="w-full px-4 py-3 border-2 border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-400 transition-all duration-300 bg-white/80 backdrop-blur-sm hover:border-green-300 hover:shadow-md"
-										>
-											<option value="">🏷️ All Categories</option>
-											{allCategories.map(category => (
-												<option key={category} value={category}>{category}</option>
-											))}
-										</select>
-									</div>
-								)}
-								{allTags.length > 0 && (
-									<div className="sm:w-48">
-										<select 
-											name="tag" 
-											defaultValue={(resolvedSearchParams.tag as string) ?? ""} 
-											className="w-full px-4 py-3 border-2 border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-400 transition-all duration-300 bg-white/80 backdrop-blur-sm hover:border-orange-300 hover:shadow-md"
-										>
-											<option value="">🏷️ All Tags</option>
-											{allTags.map(tag => (
-												<option key={tag} value={tag}>{tag}</option>
-											))}
-										</select>
-									</div>
-								)}
-							</div>
-						)}
-					</form>
-				</ColorfulCard>
+			{/* Search and Filters Section */}
+			<div id="products" className="mb-6">
+				<SearchFilters 
+					allCategories={allCategories}
+					allTags={allTags}
+					initialParams={{
+						q: resolvedSearchParams.q as string,
+						sort: resolvedSearchParams.sort as string,
+						category: resolvedSearchParams.category as string,
+						tag: resolvedSearchParams.tag as string,
+					}}
+				/>
 			</div>
 
-			{/* Categories Section */}
-			<div id="categories" className="mb-8">
-				<ColorfulCard colorScheme="purple" className="p-6">
-					<h2 className="text-xl font-semibold mb-4">🏷️ Product Categories</h2>
-					<div className="flex flex-wrap gap-2">
-						{Array.from(new Set(products?.flatMap(p => p.categories) || [])).map((category) => (
-							<span key={category} className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
-								{category}
-							</span>
-						))}
-					</div>
-				</ColorfulCard>
-			</div>
 
 			{products && products.length > 0 ? (
 				<>
@@ -159,24 +95,24 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 							const colorScheme = colorSchemes[index % colorSchemes.length];
 							
 							return (
-								<div key={p.id} className="group">
-									<Link href={`/product/${p.slug}`} className="block cursor-pointer">
+								<div key={p.id} className="group flex flex-col h-full">
+									<Link href={`/product/${p.slug}`} className="block cursor-pointer flex-1">
 										<ColorfulCard 
 											colorScheme={colorScheme}
-											className="overflow-hidden"
+											className="overflow-hidden h-full flex flex-col"
 										>
 											<CatalogImageCarousel 
 												images={p.product_images || []} 
 												productName={p.name}
 											/>
-											<div className="p-4">
+											<div className="p-4 flex-1 flex flex-col">
 												<h3 className="font-semibold text-slate-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
 													{p.name}
 												</h3>
 												
 												{/* Categories and Tags */}
 												{(p.categories?.length > 0 || p.tags?.length > 0) && (
-													<div className="mb-3 space-y-2">
+													<div className="mb-3 space-y-2 flex-1">
 														{p.categories?.length > 0 && (
 															<div className="flex flex-wrap gap-1">
 																{p.categories.slice(0, 2).map((category: string) => (
@@ -208,7 +144,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 													</div>
 												)}
 												
-												<div className="text-lg font-bold text-blue-600 flex items-center">
+												<div className="text-lg font-bold text-blue-600 flex items-center mt-auto">
 													<span className="text-2xl">₹</span>
 													<span className="ml-1">{p.price_rupees.toLocaleString()}</span>
 												</div>

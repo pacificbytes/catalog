@@ -78,6 +78,7 @@ export default function SiteConfigForm({ initialConfigs }: SiteConfigFormProps) 
 			colorScheme: "green" as const,
 			configs: [
 				{ key: "whatsapp_number", label: "WhatsApp Number", type: "tel" },
+				{ key: "whatsapp_message_template", label: "WhatsApp Message Template", type: "textarea" },
 				{ key: "directions_url", label: "Directions Link", type: "url" },
 				{ key: "copyright_text", label: "Copyright Text", type: "text" }
 			]
@@ -152,9 +153,9 @@ export default function SiteConfigForm({ initialConfigs }: SiteConfigFormProps) 
 										This number will be used for WhatsApp contact buttons on product pages
 									</p>
 								)}
-								{config.key === "directions_url" && (
+								{config.key === "whatsapp_message_template" && (
 									<p className="text-xs text-slate-500 mt-1">
-										Paste a directions link (Google Maps, Apple Maps, etc.) for your business location
+										Use {"{product_name}"} and {"{product_link}"} as placeholders. This message will be sent when customers click the WhatsApp button.
 									</p>
 								)}
 							</div>

@@ -5,7 +5,7 @@ import AdminActions from "@/components/AdminActions";
 import ColorfulCard from "@/components/ColorfulCard";
 import ColorfulBadge from "@/components/ColorfulBadge";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { isAdmin } from "@/lib/auth";
+import { isAdmin, isManager } from "@/lib/auth";
 import { notFound } from "next/navigation";
 
 export default async function ProductDetail({ params }: { params: { slug: string } }) {
@@ -20,8 +20,9 @@ export default async function ProductDetail({ params }: { params: { slug: string
 		
 		console.log("Product query result:", { product, error });
 		
-		// Check if user is admin
+		// Check if user is admin or manager
 		const userIsAdmin = await isAdmin();
+		const userIsManager = await isManager();
 		
 		if (error) {
 			console.error("Database error:", error);
@@ -133,18 +134,20 @@ export default async function ProductDetail({ params }: { params: { slug: string
 								<span className="font-medium text-slate-700 mr-2">📦 Stock:</span>
 								<span className="text-slate-600">{product.stock}</span>
 							</div>
-							<div className="flex items-center">
-								<span className="font-medium text-slate-700 mr-2">📊 Status:</span>
-								<ColorfulBadge 
-									variant={
-										product.status === 'published' ? 'green' :
-										product.status === 'draft' ? 'yellow' : 'red'
-									}
-									size="sm"
-								>
-									{product.status}
-								</ColorfulBadge>
-							</div>
+							{(userIsAdmin || userIsManager) && (
+								<div className="flex items-center">
+									<span className="font-medium text-slate-700 mr-2">📊 Status:</span>
+									<ColorfulBadge 
+										variant={
+											product.status === 'published' ? 'green' :
+											product.status === 'draft' ? 'yellow' : 'red'
+										}
+										size="sm"
+									>
+										{product.status}
+									</ColorfulBadge>
+								</div>
+							)}
 						</div>
 					</ColorfulCard>
 					
@@ -156,7 +159,7 @@ export default async function ProductDetail({ params }: { params: { slug: string
 						🏠 Back to Catalog
 					</Link>
 					
-						<WhatsAppButton productName={product.name} />
+						<WhatsAppButton productName={product.name} productSlug={product.slug} />
 					</div>
 				</div>
 			</div>

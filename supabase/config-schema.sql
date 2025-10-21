@@ -17,6 +17,7 @@ INSERT INTO public.site_config (key, value, description) VALUES
 ('company_phone', '+91 9876543210', 'Company phone number'),
 ('company_email', 'info@chaharprinting.com', 'Company email address'),
 ('whatsapp_number', '+91 9876543210', 'WhatsApp contact number'),
+('whatsapp_message_template', 'Hi! I''m interested in the "{product_name}" product. Could you please provide more information?\n\nProduct Link: {product_link}', 'WhatsApp message template (use {product_name} and {product_link} as placeholders)'),
 ('directions_url', '', 'Directions link for company location (Google Maps, Apple Maps, etc.)'),
 ('copyright_text', '© 2024 Chahar Printing Press. All rights reserved.', 'Copyright text'),
 ('facebook_url', '', 'Facebook page URL'),

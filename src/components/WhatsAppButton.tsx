@@ -5,42 +5,55 @@ import { getBrowserClient } from "@/lib/supabase/client";
 
 interface WhatsAppButtonProps {
 	productName: string;
+	productSlug: string;
 	className?: string;
 }
 
-export default function WhatsAppButton({ productName, className = "" }: WhatsAppButtonProps) {
+export default function WhatsAppButton({ productName, productSlug, className = "" }: WhatsAppButtonProps) {
 	const [whatsappNumber, setWhatsappNumber] = useState<string>("");
+	const [messageTemplate, setMessageTemplate] = useState<string>("");
 	const [loading, setLoading] = useState(true);
 	const supabase = getBrowserClient();
 
 	useEffect(() => {
-		const fetchWhatsAppNumber = async () => {
+		const fetchWhatsAppConfig = async () => {
 			try {
 				const { data, error } = await supabase
 					.from('site_config')
-					.select('value')
-					.eq('key', 'whatsapp_number')
-					.single();
+					.select('key, value')
+					.in('key', ['whatsapp_number', 'whatsapp_message_template']);
 				
 				if (error) {
-					console.error('Error fetching WhatsApp number:', error);
+					console.error('Error fetching WhatsApp config:', error);
 				} else {
-					setWhatsappNumber(data?.value || '');
+					const config: Record<string, string> = {};
+					data?.forEach((item: { key: string; value: string }) => {
+						config[item.key] = item.value;
+					});
+					
+					setWhatsappNumber(config.whatsapp_number || '');
+					setMessageTemplate(config.whatsapp_message_template || 'Hi! I\'m interested in the "{product_name}" product. Could you please provide more information?\n\nProduct Link: {product_link}');
 				}
 			} catch (error) {
-				console.error('Error fetching WhatsApp number:', error);
+				console.error('Error fetching WhatsApp config:', error);
 			} finally {
 				setLoading(false);
 			}
 		};
 
-		fetchWhatsAppNumber();
+		fetchWhatsAppConfig();
 	}, [supabase]);
 
 	const handleWhatsAppClick = () => {
 		if (!whatsappNumber) return;
 		
-		const message = `Hi! I'm interested in the "${productName}" product. Could you please provide more information?`;
+		// Construct the full product URL
+		const productUrl = `${window.location.origin}/product/${productSlug}`;
+		
+		// Replace placeholders with actual values
+		let message = messageTemplate.replace('{product_name}', productName);
+		message = message.replace('{product_link}', productUrl);
+		
 		const encodedMessage = encodeURIComponent(message);
 		const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodedMessage}`;
 		
