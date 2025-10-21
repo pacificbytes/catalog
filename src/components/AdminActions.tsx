@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getBrowserClient } from "@/lib/supabase/client";
 import LoadingButton from "./LoadingButton";
+import { useUserRole } from "@/lib/auth-client";
 
 interface AdminActionsProps {
 	productId: string;
@@ -15,6 +16,7 @@ export default function AdminActions({ productId, productName, className = "" }:
 	const router = useRouter();
 	const supabase = getBrowserClient();
 	const [isDeleting, setIsDeleting] = useState(false);
+	const userRole = useUserRole();
 
 	const handleEdit = () => {
 		router.push(`/admin/products/${productId}`);
@@ -57,16 +59,18 @@ export default function AdminActions({ productId, productName, className = "" }:
 			>
 				✏️ Edit
 			</LoadingButton>
-			<LoadingButton
-				onClick={handleDelete}
-				loading={isDeleting}
-				loadingText="Deleting..."
-				variant="danger"
-				size="sm"
-				className="shadow-md hover:shadow-lg"
-			>
-				🗑️ Delete
-			</LoadingButton>
+			{userRole === 'admin' && (
+				<LoadingButton
+					onClick={handleDelete}
+					loading={isDeleting}
+					loadingText="Deleting..."
+					variant="danger"
+					size="sm"
+					className="shadow-md hover:shadow-lg"
+				>
+					🗑️ Delete
+				</LoadingButton>
+			)}
 		</div>
 	);
 }

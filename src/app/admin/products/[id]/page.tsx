@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getBrowserClient } from "@/lib/supabase/client";
+import { useUserRole } from "@/lib/auth-client";
 
 export default function EditProductPage() {
 	const { id } = useParams<{ id: string }>();
@@ -16,6 +17,7 @@ export default function EditProductPage() {
 	const [status, setStatus] = useState("published");
 	const [existingImages, setExistingImages] = useState<Array<{ id: string; url: string; alt?: string }>>([]);
 	const [newImages, setNewImages] = useState<FileList | null>(null);
+	const userRole = useUserRole();
 
 	useEffect(() => {
 		(async () => {
@@ -241,13 +243,15 @@ export default function EditProductPage() {
 						>
 							Cancel
 						</button>
-						<button 
-							type="button" 
-							onClick={onDeleteProduct}
-							className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-						>
-							Delete
-						</button>
+						{userRole === 'admin' && (
+							<button 
+								type="button" 
+								onClick={onDeleteProduct}
+								className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+							>
+								Delete
+							</button>
+						)}
 					</div>
 				</form>
 			</div>

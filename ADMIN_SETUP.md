@@ -90,11 +90,13 @@ The system will automatically sync the user data and apply the correct role perm
 - **Settings Page**: System configuration and security settings
 - **User Management**: Create, edit, and delete users
 - **Export & Backup**: Data export and system information
+- **Product Deletion**: Only admins can delete products
 
 ### Manager Access:
-- **Products**: Create, edit, and delete products
+- **Products**: Create, edit, and change status of products
 - **Categories**: Manage product categories
 - **Dashboard**: View system statistics
+- **No Product Deletion**: Managers cannot delete products (admin-only)
 
 ## 🚨 Troubleshooting
 
