@@ -93,7 +93,7 @@ export default async function ContactPage() {
 									<div>
 										<h4 className="font-semibold text-gray-900">Email</h4>
 										<a href={`mailto:${config.company_email}`} className="text-blue-600 hover:text-blue-800 transition-colors">
-											{config.company_email || 'info@chaharprinting.com'}
+											{config.company_email || ''}
 										</a>
 									</div>
 								</div>

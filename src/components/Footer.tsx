@@ -18,12 +18,12 @@ interface FooterConfig {
 
 export default function Footer() {
 	const [config, setConfig] = useState<FooterConfig>({
-		company_name: 'Chahar Printing Press',
-		company_address: '123 Business Street, City, State 12345',
-		company_phone: '+91 9876543210',
-		company_email: 'info@chaharprinting.com',
+		company_name: '',
+		company_address: '',
+		company_phone: '',
+		company_email: '',
 		directions_url: '',
-		copyright_text: '© 2024 Chahar Printing Press. All rights reserved.',
+		copyright_text: '',
 		facebook_url: '',
 		instagram_url: '',
 		linkedin_url: ''
