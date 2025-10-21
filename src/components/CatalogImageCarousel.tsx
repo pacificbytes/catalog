@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import ProductImage from "@/components/ProductImage";
 
 interface CatalogImageCarouselProps {
@@ -12,6 +12,7 @@ export default function CatalogImageCarousel({ images, productName }: CatalogIma
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const [touchStart, setTouchStart] = useState<number | null>(null);
 	const [touchEnd, setTouchEnd] = useState<number | null>(null);
+	const [isTransitioning, setIsTransitioning] = useState(false);
 	const carouselRef = useRef<HTMLDivElement>(null);
 
 	// Minimum distance for swipe detection
@@ -34,12 +35,24 @@ export default function CatalogImageCarousel({ images, productName }: CatalogIma
 		const isRightSwipe = distance < -minSwipeDistance;
 
 		if (isLeftSwipe && images.length > 1) {
-			setSelectedIndex(selectedIndex === images.length - 1 ? 0 : selectedIndex + 1);
+			changeImage(selectedIndex === images.length - 1 ? 0 : selectedIndex + 1);
 		}
 		if (isRightSwipe && images.length > 1) {
-			setSelectedIndex(selectedIndex === 0 ? images.length - 1 : selectedIndex - 1);
+			changeImage(selectedIndex === 0 ? images.length - 1 : selectedIndex - 1);
 		}
 	};
+
+	const changeImage = useCallback((newIndex: number) => {
+		if (isTransitioning || newIndex === selectedIndex) return;
+		
+		setIsTransitioning(true);
+		setSelectedIndex(newIndex);
+		
+		// Reset transition state after animation
+		setTimeout(() => {
+			setIsTransitioning(false);
+		}, 300);
+	}, [isTransitioning, selectedIndex]);
 
 	if (!images || images.length === 0) {
 		return (
@@ -66,7 +79,7 @@ export default function CatalogImageCarousel({ images, productName }: CatalogIma
 				<ProductImage 
 					src={images[selectedIndex].url} 
 					alt={images[selectedIndex].alt || productName} 
-					className="w-full h-full object-cover transition-transform duration-200"  
+					className={`w-full h-full object-cover transition-all duration-300 ease-in-out ${isTransitioning ? 'scale-105 opacity-90' : 'scale-100 opacity-100'}`}
 					lazy={true} // Catalog images can lazy load
 					fallbackIcon={
 						<svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,7 +102,7 @@ export default function CatalogImageCarousel({ images, productName }: CatalogIma
 							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
-								setSelectedIndex(selectedIndex === 0 ? images.length - 1 : selectedIndex - 1);
+								changeImage(selectedIndex === 0 ? images.length - 1 : selectedIndex - 1);
 							}}
 							className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
 							aria-label="Previous image"
@@ -102,7 +115,7 @@ export default function CatalogImageCarousel({ images, productName }: CatalogIma
 							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
-								setSelectedIndex(selectedIndex === images.length - 1 ? 0 : selectedIndex + 1);
+								changeImage(selectedIndex === images.length - 1 ? 0 : selectedIndex + 1);
 							}}
 							className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
 							aria-label="Next image"
@@ -123,7 +136,7 @@ export default function CatalogImageCarousel({ images, productName }: CatalogIma
 								onClick={(e) => {
 									e.preventDefault();
 									e.stopPropagation();
-									setSelectedIndex(idx);
+									changeImage(idx);
 								}}
 								className={`flex-shrink-0 w-8 h-8 rounded border overflow-hidden transition-all ${
 									idx === selectedIndex 
