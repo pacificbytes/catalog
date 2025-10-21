@@ -65,19 +65,9 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 	return (
 		<div className="container mx-auto px-4 py-8">
 			<div className="mb-8">
-				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-					<div>
-						<h1 className="text-3xl font-bold text-slate-900 mb-2">Product Catalog</h1>
-						<p className="text-slate-600">Discover our professional printing services</p>
-					</div>
-					<div className="flex gap-3">
-						<Link 
-							href="/login" 
-							className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-medium shadow-lg cursor-pointer"
-						>
-							🔐 Admin Login
-						</Link>
-					</div>
+				<div className="text-center">
+					<h1 className="text-3xl font-bold text-slate-900 mb-2">Product Catalog</h1>
+					<p className="text-slate-600">Discover our professional printing services</p>
 				</div>
 			</div>
 
@@ -274,56 +264,6 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 					<p className="text-slate-600">Try adjusting your search criteria</p>
 				</div>
 			)}
-
-			{/* Contact Section */}
-			<div id="contact" className="mb-8">
-				<ColorfulCard colorScheme="green" className="p-6">
-					<h2 className="text-xl font-semibold mb-4">📞 Contact Us</h2>
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-						<div>
-							<h3 className="font-semibold text-slate-900 mb-2">Get in Touch</h3>
-							<p className="text-slate-600 mb-4">
-								Ready to start your printing project? Contact us for a quote or more information about our services.
-							</p>
-							<div className="space-y-2">
-								<p className="flex items-center text-slate-600">
-									<span className="mr-2">📧</span>
-									Email us for inquiries
-								</p>
-								<p className="flex items-center text-slate-600">
-									<span className="mr-2">📱</span>
-									WhatsApp for quick responses
-								</p>
-								<p className="flex items-center text-slate-600">
-									<span className="mr-2">🏢</span>
-									Visit our office
-								</p>
-							</div>
-						</div>
-						<div>
-							<h3 className="font-semibold text-slate-900 mb-2">Why Choose Us?</h3>
-							<ul className="space-y-2 text-slate-600">
-								<li className="flex items-center">
-									<span className="mr-2">✅</span>
-									Professional quality printing
-								</li>
-								<li className="flex items-center">
-									<span className="mr-2">✅</span>
-									Fast turnaround times
-								</li>
-								<li className="flex items-center">
-									<span className="mr-2">✅</span>
-									Competitive pricing
-								</li>
-								<li className="flex items-center">
-									<span className="mr-2">✅</span>
-									Expert consultation
-								</li>
-							</ul>
-						</div>
-					</div>
-				</ColorfulCard>
-			</div>
 		</div>
 	);
 }

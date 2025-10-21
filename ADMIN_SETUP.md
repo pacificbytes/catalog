@@ -97,12 +97,12 @@ The system will automatically sync the user data and apply the correct role perm
 https://maps.google.com/maps/dir/?api=1&destination=123+Business+Street,+City,+State+12345
 ```
 
+### 📄 New Pages Added
+- **Contact Page** (`/contact`): Dedicated contact page with company information, contact form, and business hours
+- **Categories Page** (`/categories`): Browse products by categories and tags with product counts
+- **Clean Main Page**: Removed admin login button for cleaner public interface
+
 ### ⚙️ Unified Settings Page
-- **Single Interface**: All configuration and settings in one place (`/admin/settings`)
-- **Site Configuration**: Manage company details, contact info, and social media links
-- **System Settings**: Image settings, security settings, and system information
-- **Export & Backup**: Data export and backup management
-- **Real-Time Updates**: Changes reflect immediately on the website
 - **Admin-Only Access**: Properly restricted to admin users
 
 ## 🔍 How the System Works

@@ -46,11 +46,12 @@ export default async function ProductDetail({ params }: { params: { slug: string
 		if (!product) {
 			notFound();
 		}
-	return (
-		<div className="container mx-auto px-4 py-8">
-			<div className="grid md:grid-cols-2 gap-8">
-				<div>
-					<ColorfulCard colorScheme="gradient" className="overflow-hidden">
+		
+		return (
+			<div className="container mx-auto px-4 py-8">
+				<div className="grid md:grid-cols-2 gap-8">
+					<div>
+						<ColorfulCard colorScheme="gradient" className="overflow-hidden">
 						<ImageCarousel 
 							images={product.product_images || []} 
 							productName={product.name}
@@ -147,18 +148,20 @@ export default async function ProductDetail({ params }: { params: { slug: string
 						</div>
 					</ColorfulCard>
 					
-					<Link href="/" className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white rounded-lg hover:from-slate-700 hover:to-slate-800 transition-colors font-medium shadow-lg cursor-pointer">
+					<div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+						<Link href="/" className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white rounded-lg hover:from-slate-700 hover:to-slate-800 transition-colors font-medium shadow-lg cursor-pointer">
 						<svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
 						</svg>
 						🏠 Back to Catalog
 					</Link>
 					
-					<WhatsAppButton productName={product.name} className="mt-4" />
+						<WhatsAppButton productName={product.name} />
+					</div>
 				</div>
 			</div>
 		</div>
-	);
+		);
 	} catch (err) {
 		console.error("Unexpected error:", err);
 		return (
