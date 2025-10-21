@@ -28,17 +28,17 @@ export default function RootLayout({
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
 					<div className="container flex h-16 items-center justify-between px-4">
-						<Link href="/" className="flex items-center space-x-2">
+						<Link href="/" className="flex items-center space-x-2 cursor-pointer">
 							<div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
 								<span className="text-white font-bold text-sm">CP</span>
 							</div>
 							<span className="font-semibold text-lg">Chahar Printing Press</span>
 						</Link>
 						<nav className="flex items-center space-x-6">
-							<Link href="/" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+							<Link href="/" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors cursor-pointer">
 								Catalog
 							</Link>
-							<Link href="/admin" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+							<Link href="/admin" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors cursor-pointer">
 								Admin
 							</Link>
 						</nav>

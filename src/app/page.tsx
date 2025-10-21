@@ -3,6 +3,8 @@ import { getServerClient } from "@/lib/supabase/server";
 import { parsePagination } from "@/lib/pagination";
 import CatalogImageCarousel from "@/components/CatalogImageCarousel";
 import AdminActions from "@/components/AdminActions";
+import ColorfulCard from "@/components/ColorfulCard";
+import ColorfulBadge from "@/components/ColorfulBadge";
 import { isAdmin } from "@/lib/auth";
 
 function buildQuery(
@@ -63,35 +65,47 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 	return (
 		<div className="container mx-auto px-4 py-8">
 			<div className="mb-8">
-				<h1 className="text-3xl font-bold text-slate-900 mb-2">Product Catalog</h1>
-				<p className="text-slate-600">Discover our professional printing services</p>
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+					<div>
+						<h1 className="text-3xl font-bold text-slate-900 mb-2">Product Catalog</h1>
+						<p className="text-slate-600">Discover our professional printing services</p>
+					</div>
+					<div className="flex gap-3">
+						<Link 
+							href="/login" 
+							className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
+						>
+							🔐 Admin Login
+						</Link>
+					</div>
+				</div>
 			</div>
 
 			<div className="mb-8">
-				<div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+				<ColorfulCard colorScheme="gradient" className="p-6">
 					<form className="space-y-4">
 						<div className="flex flex-col sm:flex-row gap-4">
 							<div className="flex-1">
 								<input 
 									name="q" 
-									placeholder="Search products..." 
+									placeholder="🔍 Search products..." 
 									defaultValue={(resolvedSearchParams.q as string) ?? ""} 
-									className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+									className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition-all duration-300 bg-white/80 backdrop-blur-sm hover:border-blue-300 hover:shadow-md" 
 								/>
 							</div>
 							<div className="sm:w-48">
 								<select 
 									name="sort" 
 									defaultValue={(resolvedSearchParams.sort as string) ?? "new"} 
-									className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+									className="w-full px-4 py-3 border-2 border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-300 bg-white/80 backdrop-blur-sm hover:border-purple-300 hover:shadow-md"
 								>
-									<option value="new">Newest First</option>
-									<option value="price_asc">Price: Low to High</option>
-									<option value="price_desc">Price: High to Low</option>
+									<option value="new">🆕 Newest First</option>
+									<option value="price_asc">💰 Price: Low to High</option>
+									<option value="price_desc">💎 Price: High to Low</option>
 								</select>
 							</div>
-							<button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-								Search
+							<button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer">
+								🚀 Search
 							</button>
 						</div>
 						
@@ -103,9 +117,9 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 										<select 
 											name="category" 
 											defaultValue={(resolvedSearchParams.category as string) ?? ""} 
-											className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+											className="w-full px-4 py-3 border-2 border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-400 transition-all duration-300 bg-white/80 backdrop-blur-sm hover:border-green-300 hover:shadow-md"
 										>
-											<option value="">All Categories</option>
+											<option value="">🏷️ All Categories</option>
 											{allCategories.map(category => (
 												<option key={category} value={category}>{category}</option>
 											))}
@@ -117,9 +131,9 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 										<select 
 											name="tag" 
 											defaultValue={(resolvedSearchParams.tag as string) ?? ""} 
-											className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+											className="w-full px-4 py-3 border-2 border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-400 transition-all duration-300 bg-white/80 backdrop-blur-sm hover:border-orange-300 hover:shadow-md"
 										>
-											<option value="">All Tags</option>
+											<option value="">🏷️ All Tags</option>
 											{allTags.map(tag => (
 												<option key={tag} value={tag}>{tag}</option>
 											))}
@@ -129,77 +143,86 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 							</div>
 						)}
 					</form>
-				</div>
+				</ColorfulCard>
 			</div>
 
 			{products && products.length > 0 ? (
 				<>
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-						{products.map((p) => (
-							<div key={p.id} className="group">
-								<Link href={`/product/${p.slug}`} className="block">
-									<div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group-hover:border-blue-200">
-										<CatalogImageCarousel 
-											images={p.product_images || []} 
-											productName={p.name}
-										/>
-										<div className="p-4">
-											<h3 className="font-semibold text-slate-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-												{p.name}
-											</h3>
-											
-											{/* Categories and Tags */}
-											{(p.categories?.length > 0 || p.tags?.length > 0) && (
-												<div className="mb-2 space-y-1">
-													{p.categories?.length > 0 && (
-														<div className="flex flex-wrap gap-1">
-															{p.categories.slice(0, 2).map((category: string) => (
-																<span key={category} className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-full">
-																	{category}
-																</span>
-															))}
-															{p.categories.length > 2 && (
-																<span className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">
-																	+{p.categories.length - 2}
-																</span>
-															)}
-														</div>
-													)}
-													{p.tags?.length > 0 && (
-														<div className="flex flex-wrap gap-1">
-															{p.tags.slice(0, 3).map((tag: string) => (
-																<span key={tag} className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full">
-																	{tag}
-																</span>
-															))}
-															{p.tags.length > 3 && (
-																<span className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">
-																	+{p.tags.length - 3}
-																</span>
-															)}
-														</div>
-													)}
+						{products.map((p, index) => {
+							const colorSchemes = ["blue", "green", "purple", "pink", "orange"] as const;
+							const colorScheme = colorSchemes[index % colorSchemes.length];
+							
+							return (
+								<div key={p.id} className="group">
+									<Link href={`/product/${p.slug}`} className="block cursor-pointer">
+										<ColorfulCard 
+											colorScheme={colorScheme}
+											className="overflow-hidden"
+										>
+											<CatalogImageCarousel 
+												images={p.product_images || []} 
+												productName={p.name}
+											/>
+											<div className="p-4">
+												<h3 className="font-semibold text-slate-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+													{p.name}
+												</h3>
+												
+												{/* Categories and Tags */}
+												{(p.categories?.length > 0 || p.tags?.length > 0) && (
+													<div className="mb-3 space-y-2">
+														{p.categories?.length > 0 && (
+															<div className="flex flex-wrap gap-1">
+																{p.categories.slice(0, 2).map((category: string) => (
+																	<ColorfulBadge key={category} variant="blue" size="sm">
+																		{category}
+																	</ColorfulBadge>
+																))}
+																{p.categories.length > 2 && (
+																	<ColorfulBadge variant="blue" size="sm" animated>
+																		+{p.categories.length - 2}
+																	</ColorfulBadge>
+																)}
+															</div>
+														)}
+														{p.tags?.length > 0 && (
+															<div className="flex flex-wrap gap-1">
+																{p.tags.slice(0, 3).map((tag: string) => (
+																	<ColorfulBadge key={tag} variant="green" size="sm">
+																		{tag}
+																	</ColorfulBadge>
+																))}
+																{p.tags.length > 3 && (
+																	<ColorfulBadge variant="green" size="sm" animated>
+																		+{p.tags.length - 3}
+																	</ColorfulBadge>
+																)}
+															</div>
+														)}
+													</div>
+												)}
+												
+												<div className="text-lg font-bold text-blue-600 flex items-center">
+													<span className="text-2xl">₹</span>
+													<span className="ml-1">{p.price_rupees.toLocaleString()}</span>
 												</div>
-											)}
-											
-											<div className="text-lg font-bold text-blue-600">
-												₹{p.price_rupees.toLocaleString()}
 											</div>
+										</ColorfulCard>
+									</Link>
+									
+									{/* Admin Actions */}
+									{userIsAdmin && (
+										<div className="mt-3 flex justify-end">
+											<AdminActions 
+												productId={p.id} 
+												productName={p.name}
+											/>
 										</div>
-									</div>
-								</Link>
-								
-								{/* Admin Actions */}
-								{userIsAdmin && (
-									<div className="mt-2 flex justify-end">
-										<AdminActions 
-											productId={p.id} 
-											productName={p.name}
-										/>
-									</div>
-								)}
-							</div>
-						))}
+									)}
+								</div>
+							);
+						})}
 					</div>
 
 					{totalPages > 1 && (
@@ -212,10 +235,10 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 									<Link 
 										key={idx} 
 										href={`/?${params.toString()}`} 
-										className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+										className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ease-out cursor-pointer hover:scale-110 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 ${
 											idx === page 
-												? "bg-blue-600 text-white" 
-												: "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+												? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-xl" 
+												: "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:shadow-md hover:border-blue-300"
 										}`}
 									>
 										{idx}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getBrowserClient } from "@/lib/supabase/client";
+import LoadingButton from "./LoadingButton";
 
 interface AdminActionsProps {
 	productId: string;
@@ -48,21 +49,24 @@ export default function AdminActions({ productId, productName, className = "" }:
 
 	return (
 		<div className={`flex gap-2 ${className}`}>
-			<button
+			<LoadingButton
 				onClick={handleEdit}
-				className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
-				title="Edit product"
+				variant="primary"
+				size="sm"
+				className="shadow-md hover:shadow-lg"
 			>
-				Edit
-			</button>
-			<button
+				✏️ Edit
+			</LoadingButton>
+			<LoadingButton
 				onClick={handleDelete}
-				disabled={isDeleting}
-				className="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-md hover:bg-red-200 disabled:opacity-50 transition-colors"
-				title="Delete product"
+				loading={isDeleting}
+				loadingText="Deleting..."
+				variant="danger"
+				size="sm"
+				className="shadow-md hover:shadow-lg"
 			>
-				{isDeleting ? "Deleting..." : "Delete"}
-			</button>
+				🗑️ Delete
+			</LoadingButton>
 		</div>
 	);
 }
