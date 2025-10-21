@@ -12,7 +12,8 @@ export default function ImageCarousel({ images, productName }: ImageCarouselProp
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const [touchStart, setTouchStart] = useState<number | null>(null);
 	const [touchEnd, setTouchEnd] = useState<number | null>(null);
-	const [isTransitioning, setIsTransitioning] = useState(false);
+	const [isDragging, setIsDragging] = useState(false);
+	const [dragOffset, setDragOffset] = useState(0);
 	const carouselRef = useRef<HTMLDivElement>(null);
 
 	// Minimum distance for swipe detection
@@ -21,14 +22,25 @@ export default function ImageCarousel({ images, productName }: ImageCarouselProp
 	const handleTouchStart = (e: React.TouchEvent) => {
 		setTouchEnd(null);
 		setTouchStart(e.targetTouches[0].clientX);
+		setIsDragging(true);
+		setDragOffset(0);
 	};
 
 	const handleTouchMove = (e: React.TouchEvent) => {
-		setTouchEnd(e.targetTouches[0].clientX);
+		if (!isDragging || !touchStart) return;
+		
+		const currentX = e.targetTouches[0].clientX;
+		const deltaX = currentX - touchStart;
+		setDragOffset(deltaX);
+		setTouchEnd(currentX);
 	};
 
 	const handleTouchEnd = () => {
-		if (!touchStart || !touchEnd) return;
+		if (!isDragging || !touchStart || !touchEnd) {
+			setIsDragging(false);
+			setDragOffset(0);
+			return;
+		}
 		
 		const distance = touchStart - touchEnd;
 		const isLeftSwipe = distance > minSwipeDistance;
@@ -36,23 +48,18 @@ export default function ImageCarousel({ images, productName }: ImageCarouselProp
 
 		if (isLeftSwipe && images.length > 1) {
 			changeImage(selectedIndex === images.length - 1 ? 0 : selectedIndex + 1);
-		}
-		if (isRightSwipe && images.length > 1) {
+		} else if (isRightSwipe && images.length > 1) {
 			changeImage(selectedIndex === 0 ? images.length - 1 : selectedIndex - 1);
 		}
+		
+		setIsDragging(false);
+		setDragOffset(0);
 	};
 
 	const changeImage = useCallback((newIndex: number) => {
-		if (isTransitioning || newIndex === selectedIndex) return;
-		
-		setIsTransitioning(true);
+		if (newIndex === selectedIndex) return;
 		setSelectedIndex(newIndex);
-		
-		// Reset transition state after animation
-		setTimeout(() => {
-			setIsTransitioning(false);
-		}, 300);
-	}, [isTransitioning, selectedIndex]);
+	}, [selectedIndex]);
 
 	// Keyboard navigation
 	useEffect(() => {
@@ -92,17 +99,28 @@ export default function ImageCarousel({ images, productName }: ImageCarouselProp
 				onTouchMove={handleTouchMove}
 				onTouchEnd={handleTouchEnd}
 			>
-				<ProductImage 
-					src={images[selectedIndex].url} 
-					alt={images[selectedIndex].alt || productName} 
-					className={`w-full h-full object-cover transition-all duration-300 ease-in-out ${isTransitioning ? 'scale-105 opacity-90' : 'scale-100 opacity-100'}`}
-					lazy={false} // Main image loads immediately
-					fallbackIcon={
-						<svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-						</svg>
-					}
-				/>
+				<div 
+					className="flex h-full transition-transform duration-300 ease-out"
+					style={{
+						transform: `translateX(${-selectedIndex * 100 + (isDragging ? (dragOffset / (carouselRef.current?.offsetWidth || 1)) * 100 : 0)}%)`,
+					}}
+				>
+					{images.map((img, index) => (
+						<div key={img.id} className="w-full h-full flex-shrink-0">
+							<ProductImage 
+								src={img.url} 
+								alt={img.alt || productName} 
+								className="w-full h-full object-cover"
+								lazy={index === selectedIndex ? false : true} // Current image loads immediately, others lazy load
+								fallbackIcon={
+									<svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+									</svg>
+								}
+							/>
+						</div>
+					))}
+				</div>
 				
 				{/* Navigation Arrows */}
 				{images.length > 1 && (
