@@ -58,6 +58,53 @@ This creates the user in the custom users table with the specified role.
 
 The system will automatically sync the user data and apply the correct role permissions.
 
+## 🆕 New Features
+
+### 📱 WhatsApp Contact Integration
+- **Product Pages**: Each product now has a WhatsApp contact button
+- **Editable Number**: WhatsApp number can be configured in admin panel
+- **Auto-Message**: Pre-filled message with product name for easy inquiry
+
+### 🦶 Professional Footer
+- **Company Information**: Displays company name, address, phone, email
+- **Directions Integration**: Direct link to get directions to business location
+- **Social Media Links**: Facebook, Instagram, LinkedIn integration
+- **Quick Navigation**: Links to main sections of the website
+- **Copyright**: Customizable copyright text
+
+### 🗺️ Directions Link Setup
+
+**How to Get Directions Links:**
+
+**Google Maps:**
+1. Go to [Google Maps](https://maps.google.com)
+2. Search for your business address
+3. Click "Share" → "Embed a map" → Copy the link
+4. Or use: `https://maps.google.com/maps/dir/?api=1&destination=YOUR_ADDRESS`
+
+**Apple Maps:**
+1. Open Maps app on iPhone/Mac
+2. Search for your business
+3. Tap "Share" → "Copy Link"
+4. Or use: `https://maps.apple.com/?daddr=YOUR_ADDRESS`
+
+**Universal Directions Link:**
+- Use: `https://maps.google.com/maps/dir/?api=1&destination=YOUR_ADDRESS`
+- This works on all devices and opens the user's default map app
+
+**Example:**
+```
+https://maps.google.com/maps/dir/?api=1&destination=123+Business+Street,+City,+State+12345
+```
+
+### ⚙️ Unified Settings Page
+- **Single Interface**: All configuration and settings in one place (`/admin/settings`)
+- **Site Configuration**: Manage company details, contact info, and social media links
+- **System Settings**: Image settings, security settings, and system information
+- **Export & Backup**: Data export and backup management
+- **Real-Time Updates**: Changes reflect immediately on the website
+- **Admin-Only Access**: Properly restricted to admin users
+
 ## 🔍 How the System Works
 
 ### Authentication Flow:
@@ -87,10 +134,11 @@ The system will automatically sync the user data and apply the correct role perm
 - **Role Changes**: Can be updated in the admin panel or database
 
 ### Admin-Only Features:
-- **Settings Page**: System configuration and security settings
+- **Settings Page**: Complete system configuration, security settings, and site management
 - **User Management**: Create, edit, and delete users
 - **Export & Backup**: Data export and system information
 - **Product Deletion**: Only admins can delete products
+- **Site Configuration**: Manage company details, contact info, and social media links
 
 ### Manager Access:
 - **Products**: Create, edit, and change status of products

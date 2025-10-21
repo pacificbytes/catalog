@@ -33,8 +33,8 @@ export default function ColorfulBadge({
 	};
 
 	const animationClass = animated 
-		? "animate-pulse hover:animate-none hover:scale-110 hover:shadow-xl" 
-		: "hover:scale-110 hover:shadow-xl hover:-translate-y-0.5";
+		? "animate-pulse hover:animate-none" 
+		: "";
 
 	return (
 		<span className={`inline-flex items-center rounded-full font-medium transition-all duration-300 ease-out cursor-pointer ${variants[variant]} ${sizes[size]} ${animationClass} ${className}`}>

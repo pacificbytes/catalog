@@ -132,7 +132,7 @@ export default async function AdminHome() {
 			{/* Quick Actions */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				<Link href="/admin/products/new" className="group">
-					<ColorfulCard colorScheme="gradient" className="p-6 hover:scale-105 transition-transform">
+					<ColorfulCard colorScheme="gradient" className="p-6 transition-colors">
 						<div className="flex items-center space-x-4">
 							<div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
 								<span className="text-2xl">➕</span>
@@ -146,7 +146,7 @@ export default async function AdminHome() {
 				</Link>
 
 				<Link href="/admin/products" className="group">
-					<ColorfulCard colorScheme="gradient" className="p-6 hover:scale-105 transition-transform">
+					<ColorfulCard colorScheme="gradient" className="p-6 transition-colors">
 						<div className="flex items-center space-x-4">
 							<div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
 								<span className="text-2xl">📋</span>
@@ -160,7 +160,7 @@ export default async function AdminHome() {
 				</Link>
 
 				<Link href="/admin/categories" className="group">
-					<ColorfulCard colorScheme="gradient" className="p-6 hover:scale-105 transition-transform">
+					<ColorfulCard colorScheme="gradient" className="p-6 transition-colors">
 						<div className="flex items-center space-x-4">
 							<div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
 								<span className="text-2xl">🏷️</span>

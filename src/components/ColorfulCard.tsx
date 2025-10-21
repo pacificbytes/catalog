@@ -31,8 +31,8 @@ export default function ColorfulCard({
 	};
 
 	const hoverClasses = hoverEffect 
-		? "hover:shadow-2xl hover:scale-105 hover:border-blue-300 hover:-translate-y-1 cursor-pointer transition-all duration-300 ease-out" 
-		: "transition-all duration-300 ease-out";
+		? "hover:shadow-lg hover:border-blue-300 cursor-pointer transition-all duration-200" 
+		: "transition-all duration-200";
 
 	return (
 		<div

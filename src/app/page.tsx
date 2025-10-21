@@ -73,7 +73,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 					<div className="flex gap-3">
 						<Link 
 							href="/login" 
-							className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
+							className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-medium shadow-lg cursor-pointer"
 						>
 							🔐 Admin Login
 						</Link>
@@ -81,7 +81,8 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 				</div>
 			</div>
 
-			<div className="mb-8">
+			{/* Products Section */}
+			<div id="products" className="mb-8">
 				<ColorfulCard colorScheme="gradient" className="p-6">
 					<form className="space-y-4">
 						<div className="flex flex-col sm:flex-row gap-4">
@@ -104,7 +105,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 									<option value="price_desc">💎 Price: High to Low</option>
 								</select>
 							</div>
-							<button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer">
+							<button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-medium shadow-lg cursor-pointer">
 								🚀 Search
 							</button>
 						</div>
@@ -143,6 +144,20 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 							</div>
 						)}
 					</form>
+				</ColorfulCard>
+			</div>
+
+			{/* Categories Section */}
+			<div id="categories" className="mb-8">
+				<ColorfulCard colorScheme="purple" className="p-6">
+					<h2 className="text-xl font-semibold mb-4">🏷️ Product Categories</h2>
+					<div className="flex flex-wrap gap-2">
+						{Array.from(new Set(products?.flatMap(p => p.categories) || [])).map((category) => (
+							<span key={category} className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+								{category}
+							</span>
+						))}
+					</div>
 				</ColorfulCard>
 			</div>
 
@@ -235,10 +250,10 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 									<Link 
 										key={idx} 
 										href={`/?${params.toString()}`} 
-										className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ease-out cursor-pointer hover:scale-110 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 ${
+										className={`px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer ${
 											idx === page 
-												? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-xl" 
-												: "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:shadow-md hover:border-blue-300"
+												? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg" 
+												: "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
 										}`}
 									>
 										{idx}
@@ -259,6 +274,56 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 					<p className="text-slate-600">Try adjusting your search criteria</p>
 				</div>
 			)}
+
+			{/* Contact Section */}
+			<div id="contact" className="mb-8">
+				<ColorfulCard colorScheme="green" className="p-6">
+					<h2 className="text-xl font-semibold mb-4">📞 Contact Us</h2>
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<div>
+							<h3 className="font-semibold text-slate-900 mb-2">Get in Touch</h3>
+							<p className="text-slate-600 mb-4">
+								Ready to start your printing project? Contact us for a quote or more information about our services.
+							</p>
+							<div className="space-y-2">
+								<p className="flex items-center text-slate-600">
+									<span className="mr-2">📧</span>
+									Email us for inquiries
+								</p>
+								<p className="flex items-center text-slate-600">
+									<span className="mr-2">📱</span>
+									WhatsApp for quick responses
+								</p>
+								<p className="flex items-center text-slate-600">
+									<span className="mr-2">🏢</span>
+									Visit our office
+								</p>
+							</div>
+						</div>
+						<div>
+							<h3 className="font-semibold text-slate-900 mb-2">Why Choose Us?</h3>
+							<ul className="space-y-2 text-slate-600">
+								<li className="flex items-center">
+									<span className="mr-2">✅</span>
+									Professional quality printing
+								</li>
+								<li className="flex items-center">
+									<span className="mr-2">✅</span>
+									Fast turnaround times
+								</li>
+								<li className="flex items-center">
+									<span className="mr-2">✅</span>
+									Competitive pricing
+								</li>
+								<li className="flex items-center">
+									<span className="mr-2">✅</span>
+									Expert consultation
+								</li>
+							</ul>
+						</div>
+					</div>
+				</ColorfulCard>
+			</div>
 		</div>
 	);
 }

@@ -1,8 +1,10 @@
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/auth";
+import { getAllSiteConfig } from "@/lib/site-config";
 import ColorfulCard from "@/components/ColorfulCard";
 import ColorfulBadge from "@/components/ColorfulBadge";
 import LoadingButton from "@/components/LoadingButton";
+import SiteConfigForm from "@/components/SiteConfigForm";
 
 export default async function AdminSettings() {
 	// Check if user is admin - redirect if not
@@ -11,6 +13,8 @@ export default async function AdminSettings() {
 		redirect("/admin");
 	}
 
+	const configs = await getAllSiteConfig();
+
 	return (
 		<div className="space-y-6">
 			<div>
@@ -18,43 +22,16 @@ export default async function AdminSettings() {
 				<p className="text-gray-600">Configure your admin panel and application settings</p>
 			</div>
 
-			{/* General Settings */}
+			{/* Site Configuration */}
 			<ColorfulCard colorScheme="blue" className="p-6">
 				<h3 className="text-lg font-semibold mb-4 flex items-center">
 					<span className="mr-2">🔧</span>
-					General Settings
+					Site Configuration
 				</h3>
-				<div className="space-y-4">
-					<div className="flex items-center justify-between p-4 bg-white rounded-lg border">
-						<div>
-							<h4 className="font-medium text-slate-900">Site Name</h4>
-							<p className="text-sm text-slate-600">Chahar Printing Press</p>
-						</div>
-						<LoadingButton variant="secondary" size="sm">
-							✏️ Edit
-						</LoadingButton>
-					</div>
-					
-					<div className="flex items-center justify-between p-4 bg-white rounded-lg border">
-						<div>
-							<h4 className="font-medium text-slate-900">Default Currency</h4>
-							<p className="text-sm text-slate-600">Indian Rupees (₹)</p>
-						</div>
-						<ColorfulBadge variant="green" size="sm">
-							Active
-						</ColorfulBadge>
-					</div>
-					
-					<div className="flex items-center justify-between p-4 bg-white rounded-lg border">
-						<div>
-							<h4 className="font-medium text-slate-900">Default Product Status</h4>
-							<p className="text-sm text-slate-600">Draft (recommended for review)</p>
-						</div>
-						<LoadingButton variant="secondary" size="sm">
-							⚙️ Configure
-						</LoadingButton>
-					</div>
-				</div>
+				<p className="text-slate-600 mb-4">
+					Manage your website settings, contact information, and social media links.
+				</p>
+				<SiteConfigForm initialConfigs={configs} />
 			</ColorfulCard>
 
 			{/* Image Settings */}

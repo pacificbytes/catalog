@@ -4,6 +4,7 @@ import ImageCarousel from "@/components/ImageCarousel";
 import AdminActions from "@/components/AdminActions";
 import ColorfulCard from "@/components/ColorfulCard";
 import ColorfulBadge from "@/components/ColorfulBadge";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { isAdmin } from "@/lib/auth";
 import { notFound } from "next/navigation";
 
@@ -146,12 +147,14 @@ export default async function ProductDetail({ params }: { params: { slug: string
 						</div>
 					</ColorfulCard>
 					
-					<Link href="/" className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white rounded-lg hover:from-slate-700 hover:to-slate-800 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer">
+					<Link href="/" className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white rounded-lg hover:from-slate-700 hover:to-slate-800 transition-colors font-medium shadow-lg cursor-pointer">
 						<svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
 						</svg>
 						🏠 Back to Catalog
 					</Link>
+					
+					<WhatsAppButton productName={product.name} className="mt-4" />
 				</div>
 			</div>
 		</div>
