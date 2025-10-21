@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ProductImage from "@/components/ProductImage";
 
 interface CatalogImageCarouselProps {
@@ -10,6 +10,36 @@ interface CatalogImageCarouselProps {
 
 export default function CatalogImageCarousel({ images, productName }: CatalogImageCarouselProps) {
 	const [selectedIndex, setSelectedIndex] = useState(0);
+	const [touchStart, setTouchStart] = useState<number | null>(null);
+	const [touchEnd, setTouchEnd] = useState<number | null>(null);
+	const carouselRef = useRef<HTMLDivElement>(null);
+
+	// Minimum distance for swipe detection
+	const minSwipeDistance = 50;
+
+	const handleTouchStart = (e: React.TouchEvent) => {
+		setTouchEnd(null);
+		setTouchStart(e.targetTouches[0].clientX);
+	};
+
+	const handleTouchMove = (e: React.TouchEvent) => {
+		setTouchEnd(e.targetTouches[0].clientX);
+	};
+
+	const handleTouchEnd = () => {
+		if (!touchStart || !touchEnd) return;
+		
+		const distance = touchStart - touchEnd;
+		const isLeftSwipe = distance > minSwipeDistance;
+		const isRightSwipe = distance < -minSwipeDistance;
+
+		if (isLeftSwipe && images.length > 1) {
+			setSelectedIndex(selectedIndex === images.length - 1 ? 0 : selectedIndex + 1);
+		}
+		if (isRightSwipe && images.length > 1) {
+			setSelectedIndex(selectedIndex === 0 ? images.length - 1 : selectedIndex - 1);
+		}
+	};
 
 	if (!images || images.length === 0) {
 		return (
@@ -26,11 +56,18 @@ export default function CatalogImageCarousel({ images, productName }: CatalogIma
 	return (
 		<div className="relative group">
 			{/* Main Image */}
-			<div className="aspect-square bg-slate-100 rounded-xl border border-slate-200 overflow-hidden relative">
+			<div 
+				ref={carouselRef}
+				className="aspect-square bg-slate-100 rounded-xl border border-slate-200 overflow-hidden relative cursor-grab active:cursor-grabbing"
+				onTouchStart={handleTouchStart}
+				onTouchMove={handleTouchMove}
+				onTouchEnd={handleTouchEnd}
+			>
 				<ProductImage 
 					src={images[selectedIndex].url} 
 					alt={images[selectedIndex].alt || productName} 
 					className="w-full h-full object-cover transition-transform duration-200"  
+					lazy={true} // Catalog images can lazy load
 					fallbackIcon={
 						<svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -55,6 +92,7 @@ export default function CatalogImageCarousel({ images, productName }: CatalogIma
 								setSelectedIndex(selectedIndex === 0 ? images.length - 1 : selectedIndex - 1);
 							}}
 							className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+							aria-label="Previous image"
 						>
 							<svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -67,6 +105,7 @@ export default function CatalogImageCarousel({ images, productName }: CatalogIma
 								setSelectedIndex(selectedIndex === images.length - 1 ? 0 : selectedIndex + 1);
 							}}
 							className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+							aria-label="Next image"
 						>
 							<svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -91,11 +130,13 @@ export default function CatalogImageCarousel({ images, productName }: CatalogIma
 										? 'border-white ring-2 ring-white/50' 
 										: 'border-white/50 hover:border-white/80'
 								}`}
+								aria-label={`View image ${idx + 1}`}
 							>
 								<ProductImage 
 									src={img.url} 
 									alt={img.alt || productName} 
 									className="w-full h-full object-cover"
+									lazy={true} // Thumbnails can lazy load
 									fallbackIcon={
 										<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
