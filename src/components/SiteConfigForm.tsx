@@ -92,6 +92,20 @@ export default function SiteConfigForm({ initialConfigs }: SiteConfigFormProps) 
 				{ key: "instagram_url", label: "Instagram URL", type: "url" },
 				{ key: "linkedin_url", label: "LinkedIn URL", type: "url" }
 			]
+		},
+		{
+			title: "Business Hours",
+			icon: "🕒",
+			colorScheme: "orange" as const,
+			configs: [
+				{ key: "business_hours_monday", label: "Monday Hours", type: "text" },
+				{ key: "business_hours_tuesday", label: "Tuesday Hours", type: "text" },
+				{ key: "business_hours_wednesday", label: "Wednesday Hours", type: "text" },
+				{ key: "business_hours_thursday", label: "Thursday Hours", type: "text" },
+				{ key: "business_hours_friday", label: "Friday Hours", type: "text" },
+				{ key: "business_hours_saturday", label: "Saturday Hours", type: "text" },
+				{ key: "business_hours_sunday", label: "Sunday Hours", type: "text" }
+			]
 		}
 	];
 

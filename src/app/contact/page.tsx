@@ -15,7 +15,14 @@ export default async function ContactPage() {
 			'company_phone',
 			'company_email',
 			'whatsapp_number',
-			'directions_url'
+			'directions_url',
+			'business_hours_monday',
+			'business_hours_tuesday',
+			'business_hours_wednesday',
+			'business_hours_thursday',
+			'business_hours_friday',
+			'business_hours_saturday',
+			'business_hours_sunday'
 		]);
 
 	const config: Record<string, string> = {};
@@ -152,103 +159,49 @@ export default async function ContactPage() {
 								Business Hours
 							</h3>
 							<div className="space-y-3">
-								<div className="flex justify-between">
-									<span className="text-gray-600">Monday - Friday</span>
-									<span className="font-semibold">9:00 AM - 6:00 PM</span>
-								</div>
-								<div className="flex justify-between">
-									<span className="text-gray-600">Saturday</span>
-									<span className="font-semibold">10:00 AM - 4:00 PM</span>
-								</div>
-								<div className="flex justify-between">
-									<span className="text-gray-600">Sunday</span>
-									<span className="font-semibold">Closed</span>
-								</div>
+								{config.business_hours_monday && (
+									<div className="flex justify-between">
+										<span className="text-gray-600">Monday</span>
+										<span className="font-semibold">{config.business_hours_monday}</span>
+									</div>
+								)}
+								{config.business_hours_tuesday && (
+									<div className="flex justify-between">
+										<span className="text-gray-600">Tuesday</span>
+										<span className="font-semibold">{config.business_hours_tuesday}</span>
+									</div>
+								)}
+								{config.business_hours_wednesday && (
+									<div className="flex justify-between">
+										<span className="text-gray-600">Wednesday</span>
+										<span className="font-semibold">{config.business_hours_wednesday}</span>
+									</div>
+								)}
+								{config.business_hours_thursday && (
+									<div className="flex justify-between">
+										<span className="text-gray-600">Thursday</span>
+										<span className="font-semibold">{config.business_hours_thursday}</span>
+									</div>
+								)}
+								{config.business_hours_friday && (
+									<div className="flex justify-between">
+										<span className="text-gray-600">Friday</span>
+										<span className="font-semibold">{config.business_hours_friday}</span>
+									</div>
+								)}
+								{config.business_hours_saturday && (
+									<div className="flex justify-between">
+										<span className="text-gray-600">Saturday</span>
+										<span className="font-semibold">{config.business_hours_saturday}</span>
+									</div>
+								)}
+								{config.business_hours_sunday && (
+									<div className="flex justify-between">
+										<span className="text-gray-600">Sunday</span>
+										<span className="font-semibold">{config.business_hours_sunday}</span>
+									</div>
+								)}
 							</div>
-						</ColorfulCard>
-					</div>
-
-					{/* Contact Form */}
-					<div>
-						<ColorfulCard className="p-8">
-							<h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-								<span className="mr-3">✉️</span>
-								Send us a Message
-							</h3>
-							<form className="space-y-6">
-								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-									<div>
-										<label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-											Full Name
-										</label>
-										<input
-											type="text"
-											id="name"
-											name="name"
-											required
-											className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-											placeholder="Your full name"
-										/>
-									</div>
-									<div>
-										<label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-											Email Address
-										</label>
-										<input
-											type="email"
-											id="email"
-											name="email"
-											required
-											className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-											placeholder="your@email.com"
-										/>
-									</div>
-								</div>
-								<div>
-									<label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-										Phone Number
-									</label>
-									<input
-										type="tel"
-										id="phone"
-										name="phone"
-										className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-										placeholder="+91 9876543210"
-									/>
-								</div>
-								<div>
-									<label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-										Subject
-									</label>
-									<input
-										type="text"
-										id="subject"
-										name="subject"
-										required
-										className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-										placeholder="What's this about?"
-									/>
-								</div>
-								<div>
-									<label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-										Message
-									</label>
-									<textarea
-										id="message"
-										name="message"
-										rows={6}
-										required
-										className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
-										placeholder="Tell us how we can help you..."
-									></textarea>
-								</div>
-								<button
-									type="submit"
-									className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
-								>
-									Send Message
-								</button>
-							</form>
 						</ColorfulCard>
 					</div>
 				</div>
